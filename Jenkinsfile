@@ -19,6 +19,12 @@ podTemplate(
             image: 'ibmcom/k8s-helm:v2.6.0',
             ttyEnabled: true,
             command: 'cat'
+        ),
+        containerTemplate(
+            name: 'i360-agent', 
+            image: 'katson95/i360-agent:1.6',
+            ttyEnabled: true,
+            command: 'cat'
         )
     ],
     volumes: [
@@ -42,6 +48,16 @@ podTemplate(
         def repository
         stage ('Docker') {
             container ('docker') {
+                //def registryIp = sh(script: 'getent hosts registry.kube-system | awk \'{ print $1 ; exit }\'', returnStdout: true).trim()
+                //repository = "${registryIp}:80/hello"
+                //sh "docker build -t ${repository}:${commitId} ."
+                //sh "docker push ${repository}:${commitId}"
+                sh "docker ps"
+            }
+        }
+        
+        stage ('Gradle & Docker') {
+            container ('i360-agent') {
                 //def registryIp = sh(script: 'getent hosts registry.kube-system | awk \'{ print $1 ; exit }\'', returnStdout: true).trim()
                 //repository = "${registryIp}:80/hello"
                 //sh "docker build -t ${repository}:${commitId} ."
