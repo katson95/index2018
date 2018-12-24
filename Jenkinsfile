@@ -42,17 +42,18 @@ podTemplate(
         def repository
         stage ('Docker') {
             container ('docker') {
-                def registryIp = sh(script: 'getent hosts registry.kube-system | awk \'{ print $1 ; exit }\'', returnStdout: true).trim()
-                repository = "${registryIp}:80/hello"
-                sh "docker build -t ${repository}:${commitId} ."
-                sh "docker push ${repository}:${commitId}"
+                //def registryIp = sh(script: 'getent hosts registry.kube-system | awk \'{ print $1 ; exit }\'', returnStdout: true).trim()
+                //repository = "${registryIp}:80/hello"
+                //sh "docker build -t ${repository}:${commitId} ."
+                //sh "docker push ${repository}:${commitId}"
+                sh "docker ps"
             }
         }
-        stage ('Deploy') {
-            container ('helm') {
-                sh "/helm init --client-only --skip-refresh"
-                sh "/helm upgrade --install --wait --set image.repository=${repository},image.tag=${commitId} hello hello"
-            }
-        }
+        //stage ('Deploy') {
+        //    container ('helm') {
+       //         sh "/helm init --client-only --skip-refresh"
+       //         sh "/helm upgrade --install --wait --set image.repository=${repository},image.tag=${commitId} hello hello"
+       //     }
+      //  }
     }
 }
