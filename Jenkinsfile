@@ -63,6 +63,8 @@ podTemplate(
                 //sh "docker build -t ${repository}:${commitId} ."
                 //sh "docker push ${repository}:${commitId}"
                 sh "docker ps"
+                sh "docker-compose -v"
+                sh "gradle -v"
             }
         }
         //stage ('Deploy') {
